@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الدفع - جواهر العطور</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(255,255,245,0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 48px;
+      padding: 30px;
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+    .checkout-container h2 { color: #fadc9f; text-align: center; margin-bottom: 25px; }
+    .form-control {
+      width: 100%; margin: 10px 0; padding: 14px; border-radius: 40px;
+      background: rgba(255,255,255,0.12); color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-family: 'Tajawal', sans-serif;
+    }
+    .form-control::placeholder { color: #bbb; }
+    .form-control:focus { outline: none; border-color: #d4af37; background: rgba(255,255,255,0.2); }
+    select.form-control option { background: #1a1125; color: white; }
+    .order-summary-box {
+      background: rgba(0,0,0,0.3); padding: 18px; border-radius: 30px; margin: 15px 0;
+    }
+    .order-summary-box ul { list-style: none; padding: 0; }
+    .order-summary-box ul li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .submit-btn {
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      color: #1a1125; padding: 16px; border-radius: 60px;
+      width: 100%; font-weight: bold; border: none; cursor: pointer;
+      font-size: 1.2rem; margin-top: 10px; transition: 0.2s;
+    }
+    .submit-btn:hover { transform: scale(1.02); }
+    .payment-methods { display: flex; gap: 15px; margin: 15px 0; flex-wrap: wrap; }
+    .payment-methods label {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05); padding: 10px 18px;
+      border-radius: 40px; cursor: pointer; border: 1px solid transparent; transition: 0.2s;
+    }
+    .payment-methods label:hover,
+    .payment-methods input:checked + label {
+      border-color: #d4af37; background: rgba(212,175,55,0.15);
+    }
+    .payment-methods input { display: none; }
+    .receipt-upload {
+      margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.2);
+      border-radius: 30px; border: 1px dashed rgba(255,255,255,0.2);
+    }
+    .receipt-upload label { color: #f7c56e; font-weight: bold; display: block; margin-bottom: 10px; }
+    .receipt-upload input[type="file"] {
+      width: 100%; padding: 10px; border-radius: 30px;
+      background: rgba(255,255,255,0.05); color: #fff; border: none;
+    }
+    .receipt-upload input[type="text"] {
+      width: 100%; padding: 10px; border-radius: 30px;
+      background: rgba(255,255,255,0.05); color: #fff; border: none;
+      margin-top: 10px;
+    }
+    .thankyou-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(10px);
+      z-index: 99999; display: none; justify-content: center; align-items: center;
+    }
+    .thankyou-modal.open { display: flex; }
+    .thankyou-modal-content {
+      background: #1a1125; border-radius: 40px; padding: 40px;
+      max-width: 450px; width: 92%; text-align: center; border: 2px solid #d4af37;
+    }
+    .thankyou-modal-content .icon { font-size: 4.5rem; color: #d4af37; }
+    .thankyou-modal-content h2 { color: #fadc9f; margin: 10px 0; }
+    .thankyou-modal-content p { color: #e8ddd0; line-height: 1.7; }
+    .thankyou-modal-content .btn-home {
+      display: inline-block; background: #d4af37; color: #1a1125;
+      padding: 12px 30px; border-radius: 40px; text-decoration: none;
+      font-weight: bold; margin-top: 15px;
+    }
+    .payment-info-modal { color: #f7b955; font-weight: bold; margin: 15px 0; }
+    @media (max-width: 700px) { .checkout-container { padding: 20px; } }
+  </style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="logo"><i class="fas fa-crown"></i> جواهر العطور</div>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="cart.html">سلة التسوق 🛒</a>
+  </nav>
+</header>
+
+<div class="checkout-container">
+  <h2>💳 إتمام الطلب</h2>
+  <form id="checkout-form">
+
+    <input type="text" id="fullName" class="form-control" placeholder="الاسم الكامل" required>
+    <input type="tel" id="mobile" class="form-control" placeholder="رقم الجوال" required>
+    <input type="email" id="email" class="form-control" placeholder="البريد الإلكتروني (اختياري)">
+
+    <select id="governorate" class="form-control" required>
+      <option value="">-- اختر المحافظة --</option>
+      <option value="القاهرة">القاهرة</option>
+      <option value="الجيزة">الجيزة</option>
+      <option value="الإسكندرية">الإسكندرية</option>
+      <option value="الشرقية">الشرقية</option>
+      <option value="الدقهلية">الدقهلية</option>
+      <option value="البحيرة">البحيرة</option>
+      <option value="المنوفية">المنوفية</option>
+      <option value="القليوبية">القليوبية</option>
+      <option value="الغربية">الغربية</option>
+      <option value="كفر الشيخ">كفر الشيخ</option>
+      <option value="الإسماعيلية">الإسماعيلية</option>
+      <option value="بورسعيد">بورسعيد</option>
+      <option value="السويس">السويس</option>
+      <option value="دمياط">دمياط</option>
+      <option value="الأقصر">الأقصر</option>
+      <option value="أسوان">أسوان</option>
+      <option value="قنا">قنا</option>
+      <option value="سوهاج">سوهاج</option>
+      <option value="أسيوط">أسيوط</option>
+      <option value="المنيا">المنيا</option>
+      <option value="بني سويف">بني سويف</option>
+      <option value="الفيوم">الفيوم</option>
+      <option value="شمال سيناء">شمال سيناء</option>
+      <option value="جنوب سيناء">جنوب سيناء</option>
+      <option value="مطروح">مطروح</option>
+      <option value="البحر الأحمر">البحر الأحمر</option>
+      <option value="الوادي الجديد">الوادي الجديد</option>
+    </select>
+
+    <select id="area" class="form-control" required>
+      <option value="">-- اختر المنطقة --</option>
+    </select>
+
+    <textarea id="addressDetails" class="form-control" rows="2" placeholder="تفاصيل العنوان: الشارع، المبنى، الشقة..."></textarea>
+
+    <!-- طرق الدفع -->
+    <div class="payment-methods">
+      <input type="radio" name="payment" id="payVodafone" value="vodafone" checked>
+      <label for="payVodafone"><i class="fas fa-mobile-alt"></i> فودافون كاش</label>
+      <input type="radio" name="payment" id="payInstaPay" value="instapay">
+      <label for="payInstaPay"><i class="fas fa-mobile-alt"></i> إنستا باي</label>
+    </div>
+
+    <!-- رفع الإيصال -->
+    <div class="receipt-upload">
+      <label>📸 رفع إيصال الدفع (اختياري)</label>
+      <input type="file" id="receiptImage" accept="image/*">
+      <input type="text" id="transactionNumber" placeholder="أو أدخل رقم المعاملة (اختياري)">
+    </div>
+
+    <div id="orderSummary" class="order-summary-box">
+      <p style="color:#aaa;">📦 جاري تحميل المنتجات...</p>
+    </div>
+
+    <button type="submit" class="submit-btn">✅ تأكيد الطلب</button>
+
+  </form>
+</div>
+
+<!-- مودال الشكر -->
+<div id="thankYouModal" class="thankyou-modal">
+  <div class="thankyou-modal-content">
+    <div class="icon">🎉</div>
+    <h2 id="thankYouName">شكراً لك!</h2>
+    <p>تم استلام طلبك بنجاح. سيتم التواصل معك قريباً لتأكيد الدفع والشحن.</p>
+    <div id="paymentInfo" class="payment-info-modal"></div>
+    <a href="index.html" class="btn-home">الذهاب للرئيسية</a>
+  </div>
+</div>
+
+<!-- ===== تذييل حقوق الملكية ===== -->
+<footer class="copyright-footer">
+  <div class="footer-content">
+    <p>© Techno logic 2026 | Haytham Elsaadany</p>
+    <p><i class="fas fa-phone-alt"></i> <a href="tel:01066774623">01066774623</a> | <a href="tel:01223999366">01223999366</a></p>
+    <p><i class="fas fa-envelope"></i> <a href="mailto:lamar.haytham17@gmail.com">lamar.haytham17@gmail.com</a></p>
+    <div style="margin-top:10px;">
+      <a href="tel:01066774623" style="background:#25d366; color:white; padding:8px 20px; border-radius:40px; text-decoration:none; display:inline-block;">
+        <i class="fas fa-phone"></i> اتصل بنا
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="auth.js"></script>
+<script src="checkout.js"></script>
+</body>
+</html>

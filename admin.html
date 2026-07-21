@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - جواهر العطور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0a0512;
+            color: #f5ede0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(247,197,110,0.2);
+        }
+        .admin-container h1 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .admin-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .admin-section h2 {
+            color: #fadc9f;
+            margin-bottom: 15px;
+            border-right: 3px solid #d4af37;
+            padding-right: 15px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .form-grid input, .form-grid select, .form-grid textarea {
+            padding: 10px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: 'Tajawal', sans-serif;
+            width: 100%;
+        }
+        .form-grid textarea {
+            grid-column: span 2;
+            min-height: 60px;
+            resize: vertical;
+        }
+        .form-grid .notes-group {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .form-grid .notes-group .note-item {
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .form-grid .notes-group .note-item label {
+            color: #f7c56e;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        .form-grid .notes-group .note-item input[type="text"] {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .form-grid .notes-group .note-item input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            border: 1px dashed rgba(255,255,255,0.2);
+            color: #aaa;
+        }
+        .form-grid .notes-group .note-item .note-preview {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 15px;
+            border: 2px solid #d4af37;
+            padding: 5px;
+            background: rgba(0,0,0,0.3);
+            margin-top: 8px;
+            display: none;
+        }
+        .form-grid .file-upload-area {
+            grid-column: span 2;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 30px;
+            border: 1px dashed rgba(255,255,255,0.2);
+            text-align: center;
+        }
+        .form-grid .file-upload-area input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: #aaa;
+            border: none;
+        }
+        .form-grid .file-upload-area .preview-img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 15px;
+            border: 2px solid #d4af37;
+            padding: 5px;
+            background: rgba(0,0,0,0.3);
+            margin-top: 10px;
+            display: none;
+        }
+        .form-grid .form-actions {
+            grid-column: span 2;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: #f7c56e;
+            color: #131921;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-danger { background: #c62828; color: white; border: none; padding: 5px 15px; border-radius: 30px; cursor: pointer; }
+        .btn-edit { background: #2e7d32; color: white; border: none; padding: 5px 15px; border-radius: 30px; cursor: pointer; }
+        .btn-cancel { background: #f57c00; color: white; border: none; padding: 5px 15px; border-radius: 30px; cursor: pointer; }
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        .table-wrapper th {
+            color: #d4af37;
+            padding: 12px;
+            border-bottom: 2px solid rgba(212,175,55,0.3);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .table-wrapper td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .table-wrapper img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .table-wrapper .notes-cell {
+            font-size: 0.7rem;
+            color: #aaa;
+            max-width: 150px;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: #1a1a2e;
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(247,197,110,0.2);
+            text-align: center;
+        }
+        .login-container h2 {
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .login-container button {
+            background: #d4af37;
+            color: #1a1125;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .login-container .error-msg {
+            color: #ef9a9a;
+            margin-top: 10px;
+            display: none;
+        }
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .status-msg {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 30px;
+            display: none;
+        }
+        .status-msg.success {
+            background: rgba(46,125,50,0.3);
+            color: #81c784;
+            display: block;
+        }
+        .status-msg.error {
+            background: rgba(198,40,40,0.3);
+            color: #ef9a9a;
+            display: block;
+        }
+        .label-text {
+            color: #f7c56e;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 700px) {
+            .admin-container { padding: 15px; }
+            .form-grid textarea { grid-column: span 1; }
+            .form-grid .file-upload-area { grid-column: span 1; }
+            .form-grid .form-actions { grid-column: span 1; }
+            .form-grid .notes-group { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="adminRoot"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المنتج - جواهر العطور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: rgba(255,255,245,0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        .product-gallery {
+            flex: 1;
+            text-align: center;
+            min-width: 280px;
+        }
+        .product-gallery img {
+            max-width: 100%;
+            border-radius: 30px;
+            width: 350px;
+            height: auto;
+            cursor: zoom-in;
+            transition: 0.3s;
+        }
+        .product-gallery img:hover {
+            transform: scale(1.02);
+        }
+        .product-info {
+            flex: 1;
+            min-width: 280px;
+        }
+        .product-info h1 {
+            font-size: 2.5rem;
+            color: #fadc9f;
+            margin-bottom: 15px;
+        }
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e8ddd0;
+            margin-bottom: 20px;
+        }
+        .product-price {
+            font-size: 2rem;
+            color: #f7b955;
+            margin: 20px 0;
+            display: block;
+        }
+        .notes-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 24px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        .notes-section h3 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .notes-section div {
+            margin: 8px 0;
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(212,175,55,0.3);
+            padding-bottom: 6px;
+        }
+        .notes-section strong {
+            color: #f7c56e;
+            display: inline-block;
+            width: 100px;
+        }
+        .size-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .size-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #d4af37;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #f5ede0;
+            transition: 0.2s;
+        }
+        .size-btn.selected {
+            background: #d4af37;
+            color: #1a1125;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #aa7c2c);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1a1125;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+        .btn-primary:hover { transform: scale(1.02); }
+        .details-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #f7c56e;
+            text-decoration: none;
+        }
+        .price-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .old-price {
+            color: #aaa;
+            text-decoration: line-through;
+            font-size: 1.2rem;
+        }
+        .new-price {
+            color: #f7b955;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .discount-badge {
+            background: #e53935;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .image-modal.open {
+            display: flex;
+        }
+        .image-modal .modal-content {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 20px;
+            transition: transform 0.2s ease;
+            cursor: grab;
+        }
+        .image-modal .modal-content:active {
+            cursor: grabbing;
+        }
+        .image-modal .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            z-index: 10;
+        }
+        .image-modal .close-modal:hover {
+            color: #d4af37;
+            transform: rotate(90deg);
+        }
+        .image-modal .zoom-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 25px;
+            border-radius: 60px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .image-modal .zoom-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0 10px;
+        }
+        .image-modal .zoom-controls button:hover {
+            color: #d4af37;
+            transform: scale(1.2);
+        }
+        .image-modal .zoom-level {
+            color: white;
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (max-width: 700px) {
+            .product-detail-container { flex-direction: column; }
+            .product-gallery img { width: 100%; }
+            .image-modal .modal-content { max-width: 95%; max-height: 70vh; }
+            .image-modal .zoom-controls { padding: 8px 15px; gap: 10px; }
+            .image-modal .zoom-controls button { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="logo"><i class="fas fa-crown"></i> جواهر العطور</div>
+    <nav>
+        <a href="index.html">الرئيسية</a>
+        <a href="cart.html">سلة التسوق 🛒 <span id="cart-count-header">(0)</span></a>
+    </nav>
+</header>
+
+<div id="productDetailContainer"></div>
+
+<!-- ===== نافذة التكبير ===== -->
+<div id="imageModal" class="image-modal">
+    <span class="close-modal" id="closeModal">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div class="zoom-controls">
+        <button id="zoomInBtn" title="تكبير"><i class="fas fa-search-plus"></i></button>
+        <button id="zoomOutBtn" title="تصغير"><i class="fas fa-search-minus"></i></button>
+        <button id="resetZoomBtn" title="إعادة تعيين"><i class="fas fa-undo"></i></button>
+    </div>
+</div>
+
+<footer class="copyright-footer">
+    <div class="footer-content">
+        <p>© Techno logic 2026 | جواهر العطور</p>
+    </div>
+</footer>
+
+<script src="product.js"></script>
+</body>
+</html>

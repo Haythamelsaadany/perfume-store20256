@@ -1,0 +1,596 @@
+/* ===== الأساسيات ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: #0a0512;
+  color: #f5ede0;
+  transition: all 0.3s ease;
+}
+/* ===== نافذة تكبير الصورة ===== */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.image-modal.open {
+    display: flex;
+}
+.image-modal .modal-content {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transition: transform 0.2s ease;
+    cursor: grab;
+}
+.image-modal .modal-content:active {
+    cursor: grabbing;
+}
+.image-modal .close-modal {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    background: none;
+    border: none;
+    z-index: 10;
+}
+.image-modal .close-modal:hover {
+    color: #d4af37;
+    transform: rotate(90deg);
+}
+.image-modal .zoom-controls {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    background: rgba(0,0,0,0.6);
+    padding: 12px 25px;
+    border-radius: 60px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.image-modal .zoom-controls button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0 10px;
+}
+.image-modal .zoom-controls button:hover {
+    color: #d4af37;
+    transform: scale(1.2);
+}
+.image-modal .zoom-level {
+    color: white;
+    font-size: 0.9rem;
+    min-width: 60px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media (max-width: 700px) {
+    .image-modal .modal-content {
+        max-width: 95%;
+        max-height: 70vh;
+    }
+    .image-modal .zoom-controls {
+        padding: 8px 15px;
+        gap: 10px;
+    }
+    .image-modal .zoom-controls button {
+        font-size: 1.2rem;
+    }
+}
+
+/* ===== الثيمات ===== */
+/* الثيم الليلي (الافتراضي) */
+body.theme-dark {
+  background: #0a0512;
+  color: #f5ede0;
+}
+body.theme-dark .amazon-header {
+  background: #131921;
+}
+body.theme-dark .product-card {
+  background: #1a1a2e;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+body.theme-dark .filter-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5ede0;
+}
+body.theme-dark .filter-btn.active {
+  background: #f7c56e;
+  color: #131921;
+}
+
+/* الثيم النهاري */
+body.theme-light {
+  background: #f5f0eb;
+  color: #1a1a1a;
+}
+body.theme-light .amazon-header {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+body.theme-light .amazon-header .logo {
+  color: #b8860b;
+}
+body.theme-light .product-card {
+  background: #ffffff;
+  border-color: #e0d6c8;
+  color: #1a1a1a;
+}
+body.theme-light .product-card h3 {
+  color: #5a3e1b;
+}
+body.theme-light .filter-btn {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+}
+body.theme-light .filter-btn.active {
+  background: #b8860b;
+  color: white;
+}
+body.theme-light .hero-banner {
+  background: #e8ddd0;
+}
+body.theme-light .hero-banner h1 {
+  color: #b8860b;
+}
+body.theme-light .hero-banner p {
+  color: #5a3e1b;
+}
+body.theme-light .btn-shop {
+  background: #b8860b;
+  color: white;
+}
+body.theme-light .btn-shop:hover {
+  background: #8b6914;
+}
+body.theme-light .amazon-footer {
+  background: #e8ddd0;
+  color: #5a3e1b;
+}
+body.theme-light .amazon-footer a {
+  color: #b8860b;
+}
+
+/* الثيم الذهبي */
+body.theme-gold {
+  background: #1a0f05;
+  color: #f7e6c4;
+}
+body.theme-gold .amazon-header {
+  background: #2a1a0a;
+  border-bottom: 2px solid #d4af37;
+}
+body.theme-gold .amazon-header .logo {
+  color: #d4af37;
+}
+body.theme-gold .product-card {
+  background: #2a1a0a;
+  border-color: #d4af37;
+  color: #f7e6c4;
+}
+body.theme-gold .product-card h3 {
+  color: #d4af37;
+}
+body.theme-gold .filter-btn {
+  background: rgba(212, 175, 55, 0.15);
+  color: #f7e6c4;
+}
+body.theme-gold .filter-btn.active {
+  background: #d4af37;
+  color: #1a0f05;
+}
+body.theme-gold .hero-banner {
+  background: linear-gradient(135deg, #2a1a0a, #3a2a1a);
+  border: 1px solid #d4af37;
+}
+body.theme-gold .hero-banner h1 {
+  color: #d4af37;
+}
+body.theme-gold .btn-shop {
+  background: #d4af37;
+  color: #1a0f05;
+}
+body.theme-gold .btn-shop:hover {
+  background: #e6c45e;
+}
+body.theme-gold .amazon-footer {
+  background: #2a1a0a;
+  border-top: 2px solid #d4af37;
+}
+body.theme-gold .amazon-footer a {
+  color: #d4af37;
+}
+body.theme-gold .whatsapp-float {
+  background: #25d366;
+  color: #1a0f05;
+}
+.note-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+}
+.note-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #d4af37;
+    padding: 3px;
+}
+
+/* ===== الهيدر ===== */
+.amazon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.amazon-header .logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+.amazon-header .logo i {
+  color: #f7c56e;
+}
+.amazon-header .search-bar {
+  display: flex;
+  flex: 1;
+  max-width: 500px;
+  min-width: 180px;
+}
+.amazon-header .search-bar input {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0 30px 30px 0;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1rem;
+}
+.amazon-header .search-bar button {
+  background: #f7c56e;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 30px 0 0 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #131921;
+}
+.amazon-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.amazon-header .header-link {
+  color: #f5ede0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.amazon-header .header-link .cart span {
+  background: #f7c56e;
+  color: #131921;
+  padding: 2px 8px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+.theme-toggle-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #f5ede0;
+  padding: 6px 12px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+.theme-toggle-btn:hover {
+  background: #f7c56e;
+  color: #131921;
+}
+
+/* ===== شريط الفلاتر ===== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 12px 20px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  margin: 10px 20px;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-weight: bold;
+  color: #f7c56e;
+  font-size: 0.85rem;
+}
+.filter-btn, .theme-btn {
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.08);
+  color: #f5ede0;
+}
+.filter-btn:hover, .theme-btn:hover {
+  transform: scale(1.02);
+}
+.filter-btn.active, .theme-btn.active {
+  background: #f7c56e;
+  color: #131921;
+  border-color: #f7c56e;
+}
+
+/* ===== البانر ===== */
+.hero-banner {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 10px 20px 25px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #1a1125, #2a1a3a);
+  border: 1px solid rgba(247, 197, 110, 0.15);
+}
+.hero-banner h1 {
+  font-size: 2.2rem;
+  color: #f7c56e;
+}
+.hero-banner p {
+  font-size: 1.1rem;
+  color: #e8ddd0;
+  margin: 10px 0 20px;
+}
+.btn-shop {
+  display: inline-block;
+  background: #f7c56e;
+  color: #131921;
+  padding: 12px 30px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+.btn-shop:hover {
+  transform: scale(1.02);
+  background: #e6b45a;
+}
+
+/* ===== شبكة المنتجات ===== */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 25px;
+  margin: 20px 0;
+}
+.product-card {
+  background: #1a1a2e;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: #f7c56e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.product-card img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+.product-card h3 {
+  font-size: 1.2rem;
+  color: #fadc9f;
+  margin-bottom: 5px;
+}
+.product-card .price {
+  font-size: 1.4rem;
+  color: #f7c56e;
+  font-weight: bold;
+  display: block;
+  margin: 10px 0;
+}
+.product-card .add-to-cart {
+  background: #f7c56e;
+  color: #131921;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+}
+.product-card .add-to-cart:hover {
+  background: #e6b45a;
+}
+.product-card .gender-tag {
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  border-radius: 30px;
+  background: rgba(247, 197, 110, 0.2);
+  color: #f7c56e;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+/* ===== الجانبي (عطر اليوم والأكثر مبيعاً) ===== */
+.sidebar-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin: 20px;
+  justify-content: center;
+}
+.daily-perfume-box, .best-sellers-box {
+  background: rgba(0,0,0,0.3);
+  border-radius: 30px;
+  padding: 20px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+  text-align: center;
+  border: 1px solid rgba(247, 197, 110, 0.1);
+}
+.daily-perfume-box h3, .best-sellers-box h3 {
+  color: #f7c56e;
+  margin-bottom: 15px;
+}
+.daily-perfume-box img, .best-sellers-box img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.best-seller-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.best-seller-item:last-child {
+  border-bottom: none;
+}
+.best-seller-item .item-info {
+  text-align: right;
+  flex: 1;
+}
+.best-seller-item .item-info h4 {
+  color: #fadc9f;
+  font-size: 0.95rem;
+}
+.best-seller-item .item-info .price {
+  color: #f7c56e;
+  font-weight: bold;
+}
+
+/* ===== تذييل ===== */
+.amazon-footer {
+  background: #131921;
+  padding: 30px 20px;
+  margin-top: 40px;
+  text-align: center;
+}
+.amazon-footer .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.amazon-footer .footer-links a {
+  color: #f5ede0;
+  text-decoration: none;
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
+.amazon-footer .footer-links a:hover {
+  color: #f7c56e;
+}
+.amazon-footer p {
+  color: #aaa;
+  font-size: 0.8rem;
+}
+
+/* ===== واتساب عائم ===== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #25d366;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  z-index: 999;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}
+/* تنسيق التكبير */
+.image-modal .modal-content {
+    transition: transform 0.2s ease;
+}
+.image-modal .close-modal {
+    background: none;
+    border: none;
+}
+
+/* ===== استجابة ===== */
+@media (max-width: 700px) {
+  .amazon-header { flex-direction: column; }
+  .amazon-header .search-bar { max-width: 100%; width: 100%; }
+  .filter-bar { flex-direction: column; align-items: center; }
+  .filter-group { justify-content: center; }
+  .hero-banner h1 { font-size: 1.6rem; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}

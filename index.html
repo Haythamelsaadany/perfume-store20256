@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جواهر العطور - متجر العطور الفاخرة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header class="amazon-header">
+  <div class="logo"><i class="fas fa-crown"></i> جواهر العطور</div>
+  <div class="search-bar">
+    <button id="searchBtn"><i class="fas fa-search"></i></button>
+    <input type="text" id="searchInput" placeholder="ابحث عن عطر...">
+  </div>
+  <div class="header-actions">
+    <a href="favorites.html" class="header-link"><i class="fas fa-heart"></i> المفضلة</a>
+    <a href="cart.html" class="header-link cart"><i class="fas fa-shopping-cart"></i> السلة <span id="cart-count">0</span></a>
+    <button id="themeToggle" class="theme-toggle-btn"><i class="fas fa-moon"></i></button>
+  </div>
+</header>
+
+<!-- ===== شريط الفلاتر ===== -->
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">النوع:</span>
+    <button class="filter-btn gender-btn active" data-filter="all">الكل</button>
+    <button class="filter-btn gender-btn" data-filter="رجالي">رجالي</button>
+    <button class="filter-btn gender-btn" data-filter="حريمي">حريمي</button>
+    <button class="filter-btn gender-btn" data-filter="مختلط">مختلط</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">الفئة:</span>
+    <button class="filter-btn category-btn active" data-category="all">الكل</button>
+    <button class="filter-btn category-btn" data-category="خشبي">خشبي</button>
+    <button class="filter-btn category-btn" data-category="زهري">زهري</button>
+    <button class="filter-btn category-btn" data-category="شرقي">شرقي</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">الترتيب:</span>
+    <button class="filter-btn sort-btn active" data-sort="default">الافتراضي</button>
+    <button class="filter-btn sort-btn" data-sort="price-asc">السعر (أقل)</button>
+    <button class="filter-btn sort-btn" data-sort="price-desc">السعر (أعلى)</button>
+    <button class="filter-btn sort-btn" data-sort="sales-desc">الأكثر مبيعاً</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">الثيم:</span>
+    <button class="theme-btn active" data-theme="dark">🌙 ليلي</button>
+    <button class="theme-btn" data-theme="light">☀️ نهاري</button>
+    <button class="theme-btn" data-theme="gold">✨ ذهبي</button>
+  </div>
+</div>
+
+<!-- ===== البانر ===== -->
+<div class="hero-banner">
+  <h1>اكتشف فخامة العطور العربية</h1>
+  <p>تشكيلة مميزة من العطور الفاخرة الأصلية بأسعار لا تُقاوم</p>
+  <a href="#products" class="btn-shop">تسوق الآن <i class="fas fa-arrow-down"></i></a>
+</div>
+
+<!-- ===== عطر اليوم والأكثر مبيعاً ===== -->
+<div class="sidebar-section">
+  <div class="daily-perfume-box">
+    <h3><i class="fas fa-star-of-life"></i> عطر اليوم</h3>
+    <div id="daily-perfume-content"></div>
+  </div>
+  <div class="best-sellers-box">
+    <h3><i class="fas fa-fire"></i> الأكثر مبيعاً</h3>
+    <div id="best-sellers-grid"></div>
+  </div>
+</div>
+
+<!-- ===== شبكة المنتجات ===== -->
+<div class="main-container">
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- ===== تذييل كامل ===== -->
+<footer class="amazon-footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <a href="about.html">من نحن</a>
+      <a href="contact.html">تواصل معنا</a>
+      <a href="privacy.html">سياسة الخصوصية</a>
+      <a href="terms.html">الشروط والأحكام</a>
+      <a href="admin.html" target="_blank">لوحة التحكم</a>
+    </div>
+    <div class="footer-contact">
+      <p>© Techno logic 2026 | Haytham Elsaadany</p>
+      <p>
+        <i class="fas fa-phone-alt"></i>
+        <a href="tel:01066774623">01066774623</a> |
+        <a href="tel:01223999366">01223999366</a>
+      </p>
+      <p>
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:lamar.haytham17@gmail.com">lamar.haytham17@gmail.com</a>
+      </p>
+      <a href="tel:01066774623" class="call-btn">
+        <i class="fas fa-phone"></i> اتصل بنا
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/201066774623" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script src="app.js"></script>
+</body>
+</html>
